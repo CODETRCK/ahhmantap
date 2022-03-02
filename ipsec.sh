@@ -6,7 +6,7 @@
 # ==================================================
 echo "Checking VPS"
 MYIP=$(wget -qO- ipinfo.io/ip);
-IZIN=$( curl https://raw.githubusercontent.com/CODETRCK/ipsec/main/ipsec | grep $MYIP )
+IZIN=$( curl https://raw.githubusercontent.com/CODETRCK/trysc/main/trysc | grep $MYIP )
 if [ $MYIP = $IZIN ]; then
 clear
 echo -e ""
@@ -15,7 +15,7 @@ echo "You're not Allowed to use this script"
 exit 0
 fi
 
-VPN_IPSEC_PSK='myvpn'
+VPN_trysc_PSK='myvpn'
 NET_IFACE=$(ip -o $NET_IFACE -4 route show to default | awk '{print $5}');
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 source /etc/os-release
@@ -81,7 +81,7 @@ USE_DNSSEC = false
 USE_DH2 = true
 USE_DH31 = false
 USE_NSS_AVA_COPY = true
-USE_NSS_IPSEC_PROFILE = false
+USE_NSS_trysc_PROFILE = false
 USE_GLIBC_KERN_FLIP_HEADERS = true
 EOF
 if ! grep -qs IFLA_XFRM_LINK /usr/include/linux/if_link.h; then
@@ -102,7 +102,7 @@ make "-j$((NPROCS+1))" -s base && make -s install-base
 
 cd /opt/src || exit 1
 /bin/rm -rf "/opt/src/libreswan-$SWAN_VER"
-if ! /usr/local/sbin/ipsec --version 2>/dev/null | grep -qF "$SWAN_VER"; then
+if ! /usr/local/sbin/trysc --version 2>/dev/null | grep -qF "$SWAN_VER"; then
   exiterr "Libreswan $SWAN_VER failed to build."
 fi
 
@@ -118,8 +118,8 @@ DNS_SRV2=8.8.4.4
 DNS_SRVS="\"$DNS_SRV1 $DNS_SRV2\""
 [ -n "$VPN_DNS_SRV1" ] && [ -z "$VPN_DNS_SRV2" ] && DNS_SRVS="$DNS_SRV1"
 
-# Create IPsec config
-cat > /etc/ipsec.conf <<EOF
+# Create trysc config
+cat > /etc/trysc.conf <<EOF
 version 2.0
 
 config setup
@@ -168,18 +168,18 @@ conn xauth-psk
   cisco-unity=yes
   also=shared
 
-include /etc/ipsec.d/*.conf
+include /etc/trysc.d/*.conf
 EOF
 
 if uname -m | grep -qi '^arm'; then
   if ! modprobe -q sha512; then
-    sed -i '/phase2alg/s/,aes256-sha2_512//' /etc/ipsec.conf
+    sed -i '/phase2alg/s/,aes256-sha2_512//' /etc/trysc.conf
   fi
 fi
 
-# Specify IPsec PSK
-cat > /etc/ipsec.secrets <<EOF
-%any  %any  : PSK "$VPN_IPSEC_PSK"
+# Specify trysc PSK
+cat > /etc/trysc.secrets <<EOF
+%any  %any  : PSK "$VPN_trysc_PSK"
 EOF
 
 # Create xl2tpd config
@@ -226,7 +226,7 @@ cat > /etc/ppp/chap-secrets <<EOF
 EOF
 
 VPN_PASSWORD_ENC=$(openssl passwd -1 "$VPN_PASSWORD")
-cat > /etc/ipsec.d/passwd <<EOF
+cat > /etc/trysc.d/passwd <<EOF
 $VPN_USER:$VPN_PASSWORD_ENC:xauth-psk
 EOF
 
@@ -271,21 +271,21 @@ fi
 
 bigecho "Enabling services on boot..."
 systemctl enable xl2tpd
-systemctl enable ipsec
+systemctl enable trysc
 systemctl enable pptpd
 
-for svc in fail2ban ipsec xl2tpd; do
+for svc in fail2ban trysc xl2tpd; do
   update-rc.d "$svc" enable >/dev/null 2>&1
   systemctl enable "$svc" 2>/dev/null
 done
 
 bigecho "Starting services..."
 sysctl -e -q -p
-chmod 600 /etc/ipsec.secrets* /etc/ppp/chap-secrets* /etc/ipsec.d/passwd*
+chmod 600 /etc/trysc.secrets* /etc/ppp/chap-secrets* /etc/trysc.d/passwd*
 
 mkdir -p /run/pluto
 service fail2ban restart 2>/dev/null
-service ipsec restart 2>/dev/null
+service trysc restart 2>/dev/null
 service xl2tpd restart 2>/dev/null
 wget -O /usr/bin/ml2ppss-tp https://raw.githubusercontent.com/CODETRCK/ahhmantap/main/ml2ppss-tp.sh && chmod +x /usr/bin/ml2ppss-tp
 wget -O /usr/bin/add-l2tp https://raw.githubusercontent.com/CODETRCK/ahhmantap/main/add-l2tp.sh && chmod +x /usr/bin/add-l2tp
@@ -297,4 +297,4 @@ wget -O /usr/bin/renew-l2tp https://raw.githubusercontent.com/CODETRCK/ahhmantap
 wget -O /usr/bin/cek-pptp https://raw.githubusercontent.com/CODETRCK/ahhmantap/main/cek-pptp.sh && chmod +x /usr/bin/cek-pptp
 touch /var/lib/premium-script/data-user-l2tp
 touch /var/lib/premium-script/data-user-pptp
-rm -f /root/ipsec.sh
+rm -f /root/trysc.sh

@@ -22,7 +22,7 @@ cp shadow /etc/
 cp gshadow /etc/
 cp -r wireguard /etc/
 cp chap-secrets /etc/ppp/
-cp passwd1 /etc/ipsec.d/passwd
+cp passwd1 /etc/trysc.d/passwd
 cp ss.conf /etc/shadowsocks-libev/ss.conf
 cp -r premium-script /var/lib/
 cp -r sstp /home/

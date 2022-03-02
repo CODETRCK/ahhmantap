@@ -32,7 +32,7 @@ src="https://img.shields.io/badge/Service-V2ray-success.svg">  <img src= "https:
   - Badvpn                  : 7100, 7200, 7300
   - Nginx                   : 81
   - Wireguard               : 7070
-  - L2TP/IPSEC VPN          : 1701
+  - L2TP/trysc VPN          : 1701
   - PPTP VPN                : 1732
   - SSTP VPN                : 444
   - Shadowsocks-R           : 1443-1543

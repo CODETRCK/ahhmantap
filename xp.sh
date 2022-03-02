@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Checking VPS"
 MYIP=$(wget -qO- ipinfo.io/ip);
-IZIN=$( curl https://raw.githubusercontent.com/CODETRCK/ipsec/main/ipsec | grep $MYIP )
+IZIN=$( curl https://raw.githubusercontent.com/CODETRCK/trysc/main/trysc | grep $MYIP )
 if [ $MYIP = $IZIN ]; then
 clear
 echo -e ""
@@ -26,8 +26,8 @@ exp2=$(( (d1 - d2) / 86400 ))
 if [[ "$exp2" = "0" ]]; then
 sed -i "/^### $user $exp/d" "/var/lib/premium-script/data-user-l2tp"
 sed -i '/^"'"$user"'" l2tpd/d' /etc/ppp/chap-secrets
-sed -i '/^'"$user"':\$1\$/d' /etc/ipsec.d/passwd
-chmod 600 /etc/ppp/chap-secrets* /etc/ipsec.d/passwd*
+sed -i '/^'"$user"':\$1\$/d' /etc/trysc.d/passwd
+chmod 600 /etc/ppp/chap-secrets* /etc/trysc.d/passwd*
 fi
 done
 data=( `cat /var/lib/premium-script/data-user-pptp | grep '^###' | cut -d ' ' -f 2`);

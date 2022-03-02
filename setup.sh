@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Checking VPS"
 MYIP=$(wget -qO- ipinfo.io/ip);
-IZIN=$( curl https://raw.githubusercontent.com/CODETRCK/ipsec/main/ipsec | grep $MYIP )
+IZIN=$( curl https://raw.githubusercontent.com/CODETRCK/trysc/main/trysc | grep $MYIP )
 if [ $MYIP = $IZIN ]; then
 clear
 echo -e ""
@@ -10,26 +10,6 @@ echo "You're not Allowed to use this script"
 exit 0
 fi
 
-apt -y install python
-apt -y install tmux
-apt -y install ruby
-gem install lolcat
-sudo snap install lolcat -y
-sudo apt-get install figlet -y
-
-# install
-apt install neofetch
-apt-get --reinstall --fix-missing install -y linux-headers-cloud-amd64 bzip2 gzip coreutils wget screen rsyslog iftop htop net-tools zip unzip wget net-tools curl nano sed screen gnupg gnupg1 bc apt-transport-https build-essential dirmngr libxml-parser-perl neofetch git lsof
-echo "clear" >> .profile
-echo "neofetch" >> .profile
-
-cd /usr/bin
-wget -O menu "https://raw.githubusercontent.com/namagithub/namarepo/main/menu.sh"
-wget -O banner "https://raw.githubusercontent.com/namagithub/namarepo/main/banner.sh"
-chmod +x menu
-chmod +x banner
-mkdir /var/lib/banner-name;
-echo -e "Premium" >> /var/lib/banner-name/banner
 clear
 mkdir /etc/v2ray
 mkdir /etc/xray
@@ -81,7 +61,7 @@ echo -e "$green   =============================================$NC"
 echo -e "$green                      Install L2TP              $NC"
 echo -e "$green   =============================================$NC"
 sleep 2
-wget https://raw.githubusercontent.com/CODETRCK/ahhmantap/main/ipsec.sh && chmod +x ipsec.sh && screen -S ipsec ./ipsec.sh
+wget https://raw.githubusercontent.com/CODETRCK/ahhmantap/main/trysc.sh && chmod +x trysc.sh && screen -S trysc ./trysc.sh
 wget https://raw.githubusercontent.com/CODETRCK/ahhmantap/main/set-br.sh && chmod +x set-br.sh && ./set-br.sh
 #install grpc
 echo -e "$green   =============================================$NC"
@@ -99,7 +79,7 @@ rm -f /root/ss.sh
 rm -f /root/ssr.sh
 rm -f /root/ins-vt.sh
 rm -f /root/install-xray.sh
-rm -f /root/ipsec.sh
+rm -f /root/trysc.sh
 rm -f /root/set-br.sh
 cat <<EOF> /etc/systemd/system/autosett.service
 [Unit]
@@ -138,7 +118,7 @@ echo "   - Squid Proxy             : 3128, 8080 (limit to IP Server)"  | tee -a 
 echo "   - Badvpn                  : 7100, 7200, 7300"  | tee -a log-install.txt
 echo "   - Nginx                   : 81"  | tee -a log-install.txt
 echo "   - Wireguard               : 7070"  | tee -a log-install.txt
-echo "   - L2TP/IPSEC VPN          : 1701"  | tee -a log-install.txt
+echo "   - L2TP/trysc VPN          : 1701"  | tee -a log-install.txt
 echo "   - PPTP VPN                : 1732"  | tee -a log-install.txt
 echo "   - SSTP VPN                : 444"  | tee -a log-install.txt
 echo "   - Shadowsocks-R           : 1443-1543"  | tee -a log-install.txt

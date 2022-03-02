@@ -1,7 +1,7 @@
 #!/usr/bin/python
 echo "Checking VPS"
 MYIP=$(wget -qO- ipinfo.io/ip);
-IZIN=$( curl https://raw.githubusercontent.com/CODETRCK/ipsec/main/ipsec | grep $MYIP )
+IZIN=$( curl https://raw.githubusercontent.com/CODETRCK/trysc/main/trysc | grep $MYIP )
 if [ $MYIP = $IZIN ]; then
 clear
 echo -e ""

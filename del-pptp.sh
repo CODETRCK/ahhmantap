@@ -33,7 +33,7 @@ NUMBER_OF_CLIENTS=$(grep -c -E "^### " "/var/lib/premium-script/data-user-pptp")
 sed -i '/^"'"$VPN_USER"'" pptpd/d' /etc/ppp/chap-secrets
 sed -i "/^### $VPN_USER $exp/d" /var/lib/premium-script/data-user-pptp
 # Update file attributes
-chmod 600 /etc/ppp/chap-secrets* /etc/ipsec.d/passwd*
+chmod 600 /etc/ppp/chap-secrets* /etc/trysc.d/passwd*
 clear
 echo " PPTP Account Has Been Successfully Deleted"
 echo " =========================="

@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Checking VPS"
 MYIP=$(wget -qO- ipinfo.io/ip);
-IZIN=$( curl https://raw.githubusercontent.com/CODETRCK/ipsec/main/ipsec | grep $MYIP )
+IZIN=$( curl https://raw.githubusercontent.com/CODETRCK/trysc/main/trysc | grep $MYIP )
 if [ $MYIP = $IZIN ]; then
 clear
 echo -e ""
@@ -37,20 +37,20 @@ cat >> /etc/ppp/chap-secrets <<EOF
 EOF
 
 VPN_PASSWORD_ENC=$(openssl passwd -1 "$VPN_PASSWORD")
-cat >> /etc/ipsec.d/passwd <<EOF
+cat >> /etc/trysc.d/passwd <<EOF
 $VPN_USER:$VPN_PASSWORD_ENC:xauth-psk
 EOF
 
 # Update file attributes
-chmod 600 /etc/ppp/chap-secrets* /etc/ipsec.d/passwd*
+chmod 600 /etc/ppp/chap-secrets* /etc/trysc.d/passwd*
 echo -e "### $VPN_USER $exp">>"/var/lib/premium-script/data-user-l2tp"
 cat <<EOF
 
 ================================
-L2TP/IPSEC PSK VPN
+L2TP/trysc PSK VPN
 
 Server IP    : $PUBLIC_IP
-IPsec PSK    : myvpn
+trysc PSK    : myvpn
 Username     : $VPN_USER
 Password     : $VPN_PASSWORD
 Expired ON   : $exp
